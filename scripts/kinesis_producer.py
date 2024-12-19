@@ -31,6 +31,6 @@ if __name__ == "__main__":
 
     # Stream data from a CSV file to Kinesis
     kinesis_producer.stream_data(
-        file_path="./data/raw_data/synthetic_ecommerce_data.csv",
+        file_path="./data/prepared_data/sorted_transactions.csv",
         delay=1
     )
