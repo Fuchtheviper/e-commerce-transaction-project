@@ -3,15 +3,19 @@ import subprocess
 import pandas as pd
 
 class KaggleDataHandler:
-    def __init__(self, dataset_name, raw_data_dir, chunk_data_dir):
+    """
+    Download dataset from kaggle then transform into dataframe and sort oldest to newest to target directory
+    """
+    def __init__(self, dataset_name, raw_data_dir, prepared_data_dir):
+        """"""
         self.dataset_name = dataset_name
         self.raw_data_dir = raw_data_dir
-        self.chunk_data_dir = chunk_data_dir
+        self.prepared_data_dir = prepared_data_dir
         self.df = None
 
         # Ensure directories exist
         os.makedirs(self.raw_data_dir, exist_ok=True)
-        os.makedirs(self.chunk_data_dir, exist_ok=True)
+        os.makedirs(self.prepared_data_dir, exist_ok=True)
 
     def download_dataset(self):
         """Download dataset from Kaggle."""
@@ -37,22 +41,23 @@ class KaggleDataHandler:
         self.df['Transaction_Date'] = pd.to_datetime(self.df['Transaction_Date'])
         print("Transaction_Date column converted to datetime format.")
 
-    def split_and_save_chunks(self):
-        """Split the data by year and month and save as separate CSV files."""
-        print("Splitting data into chunks...")
-        for (year, month), group in self.df.groupby(
-            [self.df['Transaction_Date'].dt.year,
-             self.df['Transaction_Date'].dt.month]):
-            filename = f"transactions_{year}_{month:02d}.csv"
-            output_path = os.path.join(self.chunk_data_dir, filename)
-            group.to_csv(output_path, index=False)
-            print(f"Saved {len(group)} rows to {output_path}")
+    def sort_and_save(self):
+        """Sort the data by date from oldest to latest and save as a single CSV."""
+        print("Sorting data by date...")
+        
+        # Sort the DataFrame by Transaction_Date
+        sorted_df = self.df.sort_values(by="Transaction_Date")
+        
+        # Save the sorted DataFrame to a single CSV file
+        output_path = os.path.join(self.prepared_data_dir, "sorted_transactions.csv")
+        sorted_df.to_csv(output_path, index=False)
+        print(f"Data sorted and saved locally to {output_path}")
 
     def process(self):
         """Complete pipeline: download, load, split, and save data."""
         self.download_dataset()
         self.load_data()
-        self.split_and_save_chunks()
+        self.sort_and_save()
 
 # Main script to use the class
 if __name__ == "__main__":
@@ -60,7 +65,7 @@ if __name__ == "__main__":
     dataset_handler = KaggleDataHandler(
         dataset_name="imranalishahh/comprehensive-synthetic-e-commerce-dataset",
         raw_data_dir="./data/raw_data",
-        chunk_data_dir="./data/chunk_data"
+        prepared_data_dir="./data/prepared_data"
     )
 
     # Execute the pipeline
