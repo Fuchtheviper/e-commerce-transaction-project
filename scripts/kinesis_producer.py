@@ -16,7 +16,7 @@ class KinesisProducer:
             record = row.to_dict()
             self.client.put_record(
                 StreamName=self.stream_name,
-                Data=json.dumps(record),
+                Data=json.dumps(record).encode('utf-8'),
                 PartitionKey = str(record["Transaction_ID"])
             )
             print(f"Streamed: {record}")
@@ -32,5 +32,5 @@ if __name__ == "__main__":
     # Stream data from a CSV file to Kinesis
     kinesis_producer.stream_data(
         file_path="./data/prepared_data/sorted_transactions.csv",
-        delay=1
+        delay=0.1
     )
