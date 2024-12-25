@@ -6,6 +6,12 @@ from awsglue.dynamicframe import DynamicFrame
 def extract_data(glueContext, database_name, table_name):
     """
     Extract data from Glue table.
+
+    :param database_name : name of database in AWS glue
+    :param table_name : name of table in AWS glue database
+
+    return:
+        df: dataframe of data from AWS glue table
     """
     print(f"Extracting data from Glue table: {database_name}.{table_name}")
     dynamic_frame = glueContext.create_dynamic_frame.from_catalog(
@@ -19,6 +25,9 @@ def extract_data(glueContext, database_name, table_name):
 def transform_data(df):
     """
     Clean, deduplicate, and transform the raw data.
+
+    return:
+    df_featured : dataframe after clean and done feature engineering
     """
     print("Cleaning and ensuring date column...")
     df_cleaned = (

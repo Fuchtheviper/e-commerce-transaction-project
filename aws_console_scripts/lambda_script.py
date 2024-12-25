@@ -18,6 +18,10 @@ batch_data = {}
 current_date = None
 
 def lambda_handler(event, context):
+    """
+    Lambda function to get data from stream and grouping data by Transaction date
+    to append in batch_data before save batch to s3
+    """
     global batch_data, current_date
 
     # Process each record in the Kinesis stream
