@@ -64,15 +64,3 @@ class KaggleDataHandler:
         self.download_dataset()
         self.load_data()
         self.sort_and_save()
-
-# Main script to use the class
-if __name__ == "__main__":
-    # Initialize the handler with directories and dataset name
-    dataset_handler = KaggleDataHandler(
-        dataset_name="imranalishahh/comprehensive-synthetic-e-commerce-dataset",
-        raw_data_dir="./data/raw_data",
-        prepared_data_dir="./data/prepared_data"
-    )
-
-    # Execute the pipeline
-    dataset_handler.process()

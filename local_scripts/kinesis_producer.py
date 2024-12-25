@@ -32,16 +32,3 @@ class KinesisProducer:
             )
             print(f"Streamed: {record}")
             time.sleep(delay)
-
-if __name__ == "__main__":
-    # Initialize the handler with directories and dataset name
-    kinesis_producer = KinesisProducer(
-        stream_name="e-commerce-transaction-stream",
-        region="us-east-1"
-    )
-
-    # Stream data from a CSV file to Kinesis
-    kinesis_producer.stream_data(
-        file_path="./data/prepared_data/sorted_transactions.csv",
-        delay=0.1
-    )
