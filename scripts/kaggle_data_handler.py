@@ -7,7 +7,13 @@ class KaggleDataHandler:
     Download dataset from kaggle then transform into dataframe and sort oldest to newest to target directory
     """
     def __init__(self, dataset_name, raw_data_dir, prepared_data_dir):
-        """"""
+        """
+        Constructor for kaggle api
+
+        :param dataset_name: kaggle dataset name
+        :param raw_data_dir: directory to save raw data from kaggle
+        :param prepared_data_dir: directory to save sorted data
+        """
         self.dataset_name = dataset_name
         self.raw_data_dir = raw_data_dir
         self.prepared_data_dir = prepared_data_dir
