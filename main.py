@@ -26,7 +26,7 @@ def main():
     # Step 2: Stream Data to Kinesis
     kinesis_stream_name = "e-commerce-transaction-stream"
     kinesis_region = "us-east-1"
-    delay = 0.1  # Delay between records
+    delay = 0.05  # Delay between records
 
     kinesis_producer = KinesisProducer(
         stream_name=kinesis_stream_name,
