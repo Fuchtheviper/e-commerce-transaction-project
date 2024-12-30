@@ -41,8 +41,8 @@ def transform_data(df):
     df_featured = (
         df_cleaned
         .withColumn("Discount_Amount", round((col("Revenue") / (1 - col("Discount_Applied"))) * col("Discount_Applied"), 2))
-        .withColumn("Year", year(col("Transaction_Date")))
-        .withColumn("Month", month(col("Transaction_Date")))
+        .withColumn("year", year(col("Transaction_Date")))
+        .withColumn("month", month(col("Transaction_Date")))
         .withColumn("Day_of_Week", dayofweek(col("Transaction_Date")))
         .withColumn("Is_Weekend", when(col("Day_of_Week").isin(6, 7), 1).otherwise(0))
     )
@@ -53,7 +53,7 @@ def load_data_to_s3(df, output_path):
     Load transformed data into S3 in Parquet format with partitioning.
     """
     print(f"Loading data to S3 at: {output_path}")
-    df.write.mode("overwrite").partitionBy("Year", "Month").parquet(output_path)
+    df.write.mode("overwrite").partitionBy("year", "month").parquet(output_path)
     print(f"Data successfully written to S3: {output_path}")
 
 def main():
