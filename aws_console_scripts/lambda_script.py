@@ -22,6 +22,7 @@ def lambda_handler(event, context):
     Lambda function to get data from stream and grouping data by Transaction date
     to append in batch_data before save batch to s3
     """
+
     global batch_data, current_date
 
     # Process each record in the Kinesis stream
@@ -80,10 +81,10 @@ def save_batch_to_s3(batch_date, batch_data):
     df = pd.DataFrame(batch_data[batch_date])
 
     # S3 key structure: year=YYYY/month=MM/day=DD/
-    s3_key = f"{S3_PREFIX}year={batch_date.year}/month={batch_date.month:02d}/day={batch_date.day:02d}/transactions_{batch_date.year}_{batch_date.month:02d}_{batch_date.day:02d}_{unique_id}.json"
+    s3_key = f"{S3_PREFIX}year={batch_date.year}/month={batch_date.month:02d}/day={batch_date.day:02d}/transactions_{batch_date.year}_{batch_date.month:02d}_{batch_date.day:02d}_{unique_id}.jsonl"
 
     # Convert batch data to JSON
-    json_data = json.dumps(batch_data[batch_date], indent=2)
+    json_data = "\n".join(json.dumps(record) for record in batch_data[batch_date])
 
     # Upload JSON to S3
     try:
